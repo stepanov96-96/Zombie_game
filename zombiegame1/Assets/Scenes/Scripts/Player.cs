@@ -14,11 +14,12 @@ public class Player : MonoBehaviour
     public AudioSource ShootSound;
     //private Vector2 scale;
     //private Vector2 newscale;
-    private float timer = 10.0f;
+    private float timer = 10f;
     public int PlayerHealth = 100;
     public Animator PlayerDead;
     public Animator PlayerShoot;
     public Animator anim;
+    public static bool IsShootingNow = false;
     
 
     void Start()
@@ -31,8 +32,10 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetButtonDown("Fire1")) //(&& !GameControl.isShooting) //Если игрок нажал на q
+        //стрельба
+        if (Input.GetButtonDown("Fire1") && !IsShootingNow) //(&& !GameControl.isShooting) //Если игрок нажал на q
         {
+            
             //Вызов метода стрельбы снарядами
             ShootBullet();
            // StartCoroutine(Shooting());
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour
             ShootSound.Play();
 
         }
+        //ходьба
         rb = GetComponent<Rigidbody2D>();
         float moveY = Input.GetAxis("Vertical");
         rb.MovePosition(rb.position + Vector2.up * moveY * speed * Time.deltaTime);
@@ -58,17 +62,19 @@ public class Player : MonoBehaviour
 
     void ShootBullet()
     {
+        
         GameObject newBull = Instantiate(Bullet, firePoint.position, firePoint.rotation);
         newBull.GetComponent<Bullet>().gameControl = gameControl;
         GameControl.isShooting = true;
+        IsShootingNow = true;
     }
 
-    void Spin()
+    /*/void Spin()
     {
         isRightSide = !isRightSide;
 
         transform.Rotate(0f, 180f, 0f); //Вращение персонажа по оси X на 180 градусов
-    }
+    }/*/
 
     void Dead()
     {

@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour
 
              Destroy(gameObject); //Уничтожение объекта
              GameControl.isShooting = false;
-
+            Player.IsShootingNow = false;
          }
 
         if (hitInfo.gameObject.tag.ToString().Contains("ZomCat"))
@@ -45,6 +45,7 @@ public class Bullet : MonoBehaviour
             gameControl.score1();
             Destroy(gameObject); //Уничтожение объекта
             GameControl.isShooting = false;
+            Player.IsShootingNow = false;
         }
 
 

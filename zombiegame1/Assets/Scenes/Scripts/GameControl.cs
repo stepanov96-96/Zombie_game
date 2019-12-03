@@ -16,7 +16,7 @@ public class GameControl : MonoBehaviour
     
     public Transform[] spawnPoints;
     float LastTimeSpaw = 0f;
-    float frequncySpaw = 3f;
+    float frequncySpaw = 1f;
     bool _IsSpawNow = true;
     //int CountBallNow = 0;
     int CountadvNow = 0;
@@ -38,10 +38,13 @@ public class GameControl : MonoBehaviour
 
     void Spawn()
     {
-
+        float rand = Random.Range(0.1f,3.35f);
         int spawnPointIndex = Random.Range(0, spawnPoints.Length);
         GameObject newZomCat = Instantiate(ZomCat, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);       
-        BallScript t1 = newZomCat.GetComponent<BallScript>();        
+        BallScript t1 = newZomCat.GetComponent<BallScript>();
+        Animator newZomCatAnim = newZomCat.GetComponent<Animator>();
+        t1.speed = rand;
+        newZomCatAnim.speed = t1.speed;
         t1.gameControl = this;        
         newZomCat.GetComponent<Kill>().gameControl = this;        
         ZomCatList.Add(newZomCat);        
@@ -56,25 +59,28 @@ public class GameControl : MonoBehaviour
         foreach (GameObject item in ZomCatList)
         {
             Rigidbody2D rb = item.GetComponent<Rigidbody2D>();
-            rb.MovePosition(rb.position + Vector2.left * speed * Time.deltaTime);
+            BallScript t1 = item.GetComponent<BallScript>();
+            rb.MovePosition(rb.position + Vector2.left * speed * t1.speed * Time.deltaTime);
         }
 
 
         //задержка времени
-        if (_IsSpawNow && LastTimeSpaw + frequncySpaw < Time.time)
+        if (_IsSpawNow && LastTimeSpaw + frequncySpaw < Time.time && ZomCatList.Count < 3)
         {
             Spawn();            
-            LastTimeSpaw-=1;
             LastTimeSpaw = Time.time;
             
         }
 
-        /*/if (CountadvNow > 5 && CurrentLevel == 0)
+
+
+        if (CountadvNow > 5 && CurrentLevel == 0)
         {
             _IsSpawNow = false;
             CurrentLevel++;
             _IsSpawNow = true;
-        }/*/
+            
+        }
 
     }
 
@@ -84,6 +90,7 @@ public class GameControl : MonoBehaviour
         score++;
         ScoreText.text = score+"";
 
+        
     }
    
     public void DestroyZomCat(GameObject ZomCat)
@@ -94,7 +101,8 @@ public class GameControl : MonoBehaviour
             {                
                 ZomCatList.RemoveAt(i);                
                 ZomCat.GetComponent<BoxCollider2D>().enabled = false;
-                Kill.Play();                
+                Kill.Play();
+                
             }
         }
     }

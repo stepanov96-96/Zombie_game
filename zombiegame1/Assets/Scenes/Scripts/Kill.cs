@@ -17,14 +17,14 @@ public class Kill : MonoBehaviour
         health -= damage ;
         if (health <= 0)
         {
-           
-            Die();
+            StartCoroutine(Zom());
+            //Die();
             //Debug.Log(1);
         }
     }
     public void Die()
     {
-        StartCoroutine(Zom());
+        //StartCoroutine(Zom());
         
         
     }

@@ -194,8 +194,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107514731}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.008, y: -0.077, z: 0}
-  m_LocalScale: {x: 1.861104, y: 1.19, z: 1}
+  m_LocalPosition: {x: 0.008, y: 0.809, z: 0}
+  m_LocalScale: {x: 1.861104, y: 1.3747243, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -1414,7 +1414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585992275}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2, y: 1.66, z: -1}
+  m_LocalPosition: {x: -3.2, y: 2.03, z: -1}
   m_LocalScale: {x: 0.70984375, y: -0.009062501, z: 1}
   m_Children: []
   m_Father: {fileID: 949166824}
@@ -1686,7 +1686,7 @@ PrefabInstance:
     - target: {fileID: 2287359245872284918, guid: 3c0639250fccf4044bf195e581fabcd3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.66
+      value: 2.03
       objectReference: {fileID: 0}
     - target: {fileID: 2287359245872284918, guid: 3c0639250fccf4044bf195e581fabcd3,
         type: 3}
@@ -1720,7 +1720,7 @@ PrefabInstance:
     - target: {fileID: 4055465430146248944, guid: 8aa66d1f56c45d04881877133d4556dc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.764
+      value: -3.39
       objectReference: {fileID: 0}
     - target: {fileID: 4055465430146248944, guid: 8aa66d1f56c45d04881877133d4556dc,
         type: 3}
@@ -1777,5 +1777,14 @@ PrefabInstance:
       propertyPath: gameControl
       value: 
       objectReference: {fileID: 812805982}
+    - target: {fileID: 633886109057778541, guid: 8aa66d1f56c45d04881877133d4556dc,
+        type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1342566618, guid: 8aa66d1f56c45d04881877133d4556dc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.33
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8aa66d1f56c45d04881877133d4556dc, type: 3}
