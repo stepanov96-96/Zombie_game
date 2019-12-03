@@ -5,17 +5,21 @@ using UnityEngine;
 public class Kill : MonoBehaviour
 {
     public GameControl gameControl;
-    public int health = 1;
+    public int health=100;
     public Animator ZomDead;
+    public GameObject ZomCat;
+    
 
 
-    public void TakeDamage(int damage)
+
+    public void TakeDamage(int damage=1)
     {
-        health -= damage;
+        health -= damage ;
         if (health <= 0)
         {
-            Debug.Log(1);
+           
             Die();
+            //Debug.Log(1);
         }
     }
     public void Die()
@@ -26,12 +30,12 @@ public class Kill : MonoBehaviour
     }
 
     IEnumerator Zom()
-        {
+    {
         
         ZomDead.SetTrigger("ZomDead");
-        Debug.Log("pleyerZomDie");
-        yield return new WaitForSeconds(2f);  //задержка
-        Debug.Log("ZomDie1");
+        //Debug.Log("pleyerZomDie");
+        yield return new WaitForSeconds(2f);  //задержка            
+        //Debug.Log("ZomDie1");        
         Destroy(gameObject);
     }
 }

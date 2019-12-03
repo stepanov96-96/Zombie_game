@@ -10,9 +10,9 @@ public class BallScript : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         
-       //gameControl.DestroyBall(this.gameObject);
+       
        gameControl.DestroyZomCat(this.gameObject);
-       Debug.Log("DestroyZomCat");
+       //Debug.Log("DestroyZomCat");
     }
 
 
