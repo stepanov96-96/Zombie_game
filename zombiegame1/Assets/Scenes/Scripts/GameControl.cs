@@ -6,81 +6,92 @@ using UnityEngine.UI;
 
 public class GameControl : MonoBehaviour
 {
-    //public List<GameObject> ballList = new List<GameObject>();
+    
     public List<GameObject> ZomCatList = new List<GameObject>();
     private float spawnRangeX = 20;
     private Rigidbody2D rb;
-    public float speed = 10;
-    //public GameObject boll;
-    public GameObject ZomCat;
-    
+    public float speed = 10;    
+    public GameObject[] ZomCat;    
     public Transform[] spawnPoints;
     float LastTimeSpaw = 0f;
     float frequncySpaw = 1f;
-    bool _IsSpawNow = true;
-    //int CountBallNow = 0;
+    bool _IsSpawNow = true;    
     int CountadvNow = 0;
     int CurrentLevel = 0;
     public int level = 1;
-
     private int score;
     public Text ScoreText;
     public AudioSource Kill;
     private Animator ZomDie;
-
     public static bool isShooting = false;
+    public static bool  isStopGame = false;
+    public Animator ZomIdle;
+
+
+
 
 
     void Start()
     {
         //Debug.Log("Start");
+        isStopGame = false;
+        ZomIdle = GetComponent<Animator>();
     }
 
     void Spawn()
     {
-        float rand = Random.Range(0.1f,3.35f);
+        float rand = Random.Range(0.5f,3.35f);
+        int RandCat = Random.Range(1, 5);
         int spawnPointIndex = Random.Range(0, spawnPoints.Length);
-        GameObject newZomCat = Instantiate(ZomCat, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);       
+        GameObject newZomCat = Instantiate(ZomCat[RandCat], spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);       
         BallScript t1 = newZomCat.GetComponent<BallScript>();
         Animator newZomCatAnim = newZomCat.GetComponent<Animator>();
         t1.speed = rand;
         newZomCatAnim.speed = t1.speed;
         t1.gameControl = this;        
         newZomCat.GetComponent<Kill>().gameControl = this;        
-        ZomCatList.Add(newZomCat);        
+        ZomCatList.Add(newZomCat);
         CountadvNow++;
     }
 
     
     void FixedUpdate()
     {
-      
+        int SpawCat = 3;
 
-        foreach (GameObject item in ZomCatList)
+        //пауза игры
+        if (!isStopGame)
         {
-            Rigidbody2D rb = item.GetComponent<Rigidbody2D>();
-            BallScript t1 = item.GetComponent<BallScript>();
-            rb.MovePosition(rb.position + Vector2.left * speed * t1.speed * Time.deltaTime);
-        }
+           // Debug.Log("start");
+            foreach (GameObject item in ZomCatList)
+            {
+                Rigidbody2D rb = item.GetComponent<Rigidbody2D>();
+                BallScript t1 = item.GetComponent<BallScript>();
+                rb.MovePosition(rb.position + Vector2.left * speed * t1.speed * Time.deltaTime);
+            }
 
-
-        //задержка времени
-        if (_IsSpawNow && LastTimeSpaw + frequncySpaw < Time.time && ZomCatList.Count < 3)
-        {
-            Spawn();            
-            LastTimeSpaw = Time.time;
             
+            //задержка времени
+            if (_IsSpawNow && LastTimeSpaw + frequncySpaw < Time.time && ZomCatList.Count < SpawCat )
+            {
+                SpawCat ++;
+                Spawn();
+                LastTimeSpaw = Time.time;
+
+            }
+
+
+
+            if (CountadvNow > 5 && CurrentLevel == 0)
+            {
+                _IsSpawNow = false;
+                CurrentLevel++;
+                _IsSpawNow = true;
+
+            }
         }
 
-
-
-        if (CountadvNow > 5 && CurrentLevel == 0)
-        {
-            _IsSpawNow = false;
-            CurrentLevel++;
-            _IsSpawNow = true;
-            
-        }
+        
 
     }
 
@@ -89,7 +100,7 @@ public class GameControl : MonoBehaviour
 
         score++;
         ScoreText.text = score+"";
-
+       
         
     }
    
@@ -106,7 +117,11 @@ public class GameControl : MonoBehaviour
             }
         }
     }
+
   
 
-   
+    
+
+
+
 }

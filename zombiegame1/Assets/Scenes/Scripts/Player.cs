@@ -5,59 +5,98 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject Bullet; //Снаряд
+    public GameObject BulletFly;//2 Снаряд
     public Transform firePoint; //Точка, с которой будут отправляться снаряды и лучи
-
+   
     public GameControl gameControl;
     public float speed = 20f;
-    private Rigidbody2D rb;
-    private bool isRightSide = true;
-    public AudioSource ShootSound;
-    //private Vector2 scale;
-    //private Vector2 newscale;
-    private float timer = 10f;
-    public int PlayerHealth = 100;
-    public Animator PlayerDead;
-    public Animator PlayerShoot;
+    private Rigidbody2D rb;    
+    public AudioSource ShootSound;    
+    public int PlayerHealth = 100;    
+    //public Animator GranyDead;
     public Animator anim;
     public static bool IsShootingNow = false;
-    
+    public bool going = true;
+    public float yMin;
+    public float yMax;
 
+    int heightScreen = 0;
     void Start()
     {
-        float moveY = Input.GetAxis("Vertical");        
-        //scale = new Vector2(rb.transform.localScale.x, rb.transform.localScale.y);
-        //newscale = scale;
-        anim = GetComponent<Animator>();
+        
+        float moveY = Input.GetAxis("Vertical");
+        anim = GetComponent<Animator>();        
+        heightScreen = Screen.height;
+       
     }
 
     void FixedUpdate()
     {
         //стрельба
-        if (Input.GetButtonDown("Fire1") && !IsShootingNow) //(&& !GameControl.isShooting) //Если игрок нажал на q
+        if (Input.GetButtonDown("Fire2") && !IsShootingNow)  //Если игрок нажал на e
         {
-            
-            //Вызов метода стрельбы снарядами
-            ShootBullet();
-           // StartCoroutine(Shooting());
-            
-            //PlayerShoot.SetBool("isShooting", false);
-            ShootSound.Play();
 
+            //Вызов метода стрельбы снарядами            
+            ShootBulletFly();
+            ShootSound.Play();            
         }
+
+
+
+            if (Input.GetButtonDown("Fire1") && !IsShootingNow)  //Если игрок нажал на q
+            {
+
+            //Вызов метода стрельбы снарядами
+                StartCoroutine(GranyAttack());
+                ShootBullet();                            
+                ShootSound.Play();
+            if (Input.GetButtonDown("Fire1") && !IsShootingNow)  //Если игрок повторно нажал на q
+            {
+                anim.SetBool("isGrunyAttack", false);
+                StartCoroutine(GranyAttack());
+                ShootBullet();
+                ShootSound.Play();
+
+            }
+
+
+
+            //Debug.Log("GranyAttack");
+        }
+
+
         //ходьба
+        //Debug.Log(Camera.main.WorldToScreenPoint(transform.position));
+        float yP = Camera.main.WorldToScreenPoint(transform.position).y;
+        
         rb = GetComponent<Rigidbody2D>();
         float moveY = Input.GetAxis("Vertical");
-        rb.MovePosition(rb.position + Vector2.up * moveY * speed * Time.deltaTime);
+        bool isMoveUp = true;
 
-        //play moveAnimator
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
+ 
+
+        if (Input.GetKey(KeyCode.UpArrow) && yP <= 560)
         {
+            rb.MovePosition(rb.position + Vector2.up * moveY * speed * Time.deltaTime);
             anim.SetBool("isGrunyRun", true);
+            //anim.SetBool("isGrunyAttack", false);
+
         }
         else
         {
             anim.SetBool("isGrunyRun", false);
+            
         }
+
+        if (Input.GetKey(KeyCode.DownArrow) && yP >= 189)
+        {
+            rb.MovePosition(rb.position + Vector2.up * moveY * speed * Time.deltaTime);
+            anim.SetBool("isGrunyRun", true);
+            //anim.SetBool("isGrunyAttack", false);
+        }
+
+
+                       
     }
 
     void ShootBullet()
@@ -67,14 +106,17 @@ public class Player : MonoBehaviour
         newBull.GetComponent<Bullet>().gameControl = gameControl;
         GameControl.isShooting = true;
         IsShootingNow = true;
+        
     }
 
-    /*/void Spin()
-    {
-        isRightSide = !isRightSide;
+    void ShootBulletFly()
+    {        
+        GameObject newBulletFly = Instantiate(BulletFly, firePoint.position, firePoint.rotation);
+        newBulletFly.GetComponent<BulletFly>().gameControl = gameControl;
+        GameControl.isShooting = true;
+        IsShootingNow = true;
+    }
 
-        transform.Rotate(0f, 180f, 0f); //Вращение персонажа по оси X на 180 градусов
-    }/*/
 
     void Dead()
     {
@@ -85,13 +127,27 @@ public class Player : MonoBehaviour
         }
     }
 
-    /*/IEnumerator Shooting()
+
+    void OnTriggerEnter2D(Collider2D col)
     {
-        //Debug.Log("start shooting");
-        PlayerShoot.SetBool("isShooting", true);        
-        yield return new WaitForSeconds(0.5f);
-        PlayerShoot.SetBool("isShooting", false);
-       // Debug.Log("fin shooting");
-    }/*/
+        if (col.gameObject.tag.Contains("ZomCat"))
+        {
+            GameControl.isStopGame = true;
+            anim.SetTrigger("dead");            
+        }
+                //gameControl.DestroyZomCat(this.gameObject);
+                
+    }
+
+    IEnumerator GranyAttack()
+    {
+        
+        anim.SetBool("isGrunyAttack", true);
+        yield return new WaitForSeconds(0.001f); //задержка         
+        anim.SetBool("isGrunyAttack", false);
+        
+    }
+
+    
 
 }

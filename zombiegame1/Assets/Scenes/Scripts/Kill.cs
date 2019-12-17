@@ -5,15 +5,20 @@ using UnityEngine;
 public class Kill : MonoBehaviour
 {
     public GameControl gameControl;
-    public int health=100;
+    public float health=0f;
     public Animator ZomDead;
-    public GameObject ZomCat;
-    
+    public Animator ZomCat;
+    //public GameObject ZomCat;
 
+    void Start()
+    {
+        ZomDead = GetComponent<Animator>();
+    }
 
 
     public void TakeDamage(int damage=1)
     {
+        health++;
         health -= damage ;
         if (health <= 0)
         {
@@ -26,16 +31,33 @@ public class Kill : MonoBehaviour
     {
         //StartCoroutine(Zom());
         
-        
+
+
     }
+
+    
 
     IEnumerator Zom()
     {
         
-        ZomDead.SetTrigger("ZomDead");
-        //Debug.Log("pleyerZomDie");
-        yield return new WaitForSeconds(2f);  //задержка            
-        //Debug.Log("ZomDie1");        
+        ZomDead.SetTrigger("ZomDead");        
+        yield return new WaitForSeconds(1f); //задержка         
+        StartCoroutine(ZomDie());
         Destroy(gameObject);
+    }
+
+    IEnumerator ZomDie()
+    {
+        
+        yield return new WaitForSeconds(20f);//задержка
+        Destroy(gameObject);            
+
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        //StartCoroutine(IdleZomCat());
+        //ZomDead.SetTrigger("idle");
+        //Debug.Log("StopCats");
     }
 }

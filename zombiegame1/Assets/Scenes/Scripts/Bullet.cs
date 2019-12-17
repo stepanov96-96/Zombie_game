@@ -16,10 +16,11 @@ public class Bullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = transform.right * speed; //Изменение скорости
-       
+        StartCoroutine(BulletTime());
     }
-       
-    private void OnTriggerEnter2D(Collider2D hitInfo)
+
+
+    public void OnTriggerEnter2D(Collider2D hitInfo)
     {
         //Уничтожение печеньки
          if (hitInfo.gameObject.tag.ToString().Contains("boll"))
@@ -30,9 +31,10 @@ public class Bullet : MonoBehaviour
                  kill.TakeDamage(damage);
              }
 
-             Destroy(gameObject); //Уничтожение объекта
-             GameControl.isShooting = false;
-            Player.IsShootingNow = false;
+            //Destroy(gameObject); //Уничтожение объекта            
+            //GameControl.isShooting = false;
+            //Player.IsShootingNow = false;
+
          }
 
         if (hitInfo.gameObject.tag.ToString().Contains("ZomCat"))
@@ -43,12 +45,23 @@ public class Bullet : MonoBehaviour
                 kill.TakeDamage(damage);
             }
             gameControl.score1();
-            Destroy(gameObject); //Уничтожение объекта
-            GameControl.isShooting = false;
-            Player.IsShootingNow = false;
-        }
-
-
+            //Destroy(gameObject); //Уничтожение объекта            
+            //GameControl.isShooting = false;
+            //Player.IsShootingNow = false;
+            
+        }       
 
     }
+
+    IEnumerator BulletTime()
+    {
+        //Debug.Log("start BulletTime");
+        yield return new WaitForSeconds(0.01f);
+        Destroy(this.gameObject);
+        //Debug.Log("destroy ");
+        GameControl.isShooting = false;
+        Player.IsShootingNow = false;
+        //Debug.Log("false");
+    }
+
 }
