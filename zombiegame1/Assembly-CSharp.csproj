@@ -62,13 +62,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scenes\Scripts\BallScript.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Bullet.cs" />
-    <Compile Include="Assets\Scenes\Scripts\BulletFly.cs" />
-    <Compile Include="Assets\Scenes\Scripts\GameControl.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Kill.cs" />
-    <Compile Include="Assets\Scenes\Scripts\Player.cs" />
-    <Compile Include="Assets\Scenes\Scripts\spawnbaLL.cs" />
+    <Compile Include="Assets\Scripts\BallScript.cs" />
+    <Compile Include="Assets\Scripts\Bullet.cs" />
+    <Compile Include="Assets\Scripts\BulletFly.cs" />
+    <Compile Include="Assets\Scripts\GameControl.cs" />
+    <Compile Include="Assets\Scripts\Kill.cs" />
+    <Compile Include="Assets\Scripts\LoadMenu.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\spawnbaLL.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Game/Zombiegame/Zombie_game/zombiegame1/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
